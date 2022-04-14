@@ -10,17 +10,12 @@ import warnings
 import soundfile as sf
 
 warnings.filterwarnings(action='ignore')
+
 def select_data(file):
     if not file.startswith('.') and file.endswith('.WAV'):
         return True
     else:
         return False
-
-def normalize(data):
-    max_val = data.max()
-    min_val = data.min()
-    data = np.divide(data, max(abs(max_val), abs(min_val)))
-    return data
 
 def add_zero(data):
     data[-1] = 0
