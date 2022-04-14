@@ -1,5 +1,7 @@
 ARA08(2017_2018)/
-segmented_audio/
+segmented_audio(10min)/
+segmented_audio(10sec)/
+spectrogram/
 
 
 # Byte-compiled / optimized / DLL files
