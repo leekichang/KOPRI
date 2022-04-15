@@ -27,18 +27,27 @@ def save_spectrogram(log_spectrogram, file_name):
     np.save(f'../spectrogram/{file_name}.npy', log_spectrogram,)    
 
 def mp_get_spectrogram(file):
+    #s1  = time.time()
     data, sr = librosa.load('../segmented_audio(10sec)/'+file, 32768)
-    save_spectrogram(get_spectrogram(data), file)
+    #s2  = time.time()
+    #print(f'data loading took {s2-s1:.4f} sec')
+    spectrogram = get_spectrogram(data)
+    #s3 = time.time()
+    #print(f'spectrogram took {s3-s2:.4f} sec')
+    save_spectrogram(spectrogram, file)
+    #s4 = time.time()
+    #print(f'saving took {s4-s3:.4f} sec')
 
 if __name__ == '__main__':
-    chunk_size = 513000
+    chunk_size = 1000
     args = parse_args()
-    files = os.listdir('../segmented_audio(10sec)/')
     start = time.time()
+    files = os.listdir('../segmented_audio(10sec)/')
+    files = files[args.set*chunk_size:(args.set+1)*chunk_size]
     with Pool(6) as p:
-        p.map(mp_get_spectrogram, files[args.set*chunk_size:(args.set+1)*chunk_size])
+        p.map(mp_get_spectrogram, files)
     end = time.time()
-    print(end-start)
+    print(f'{args.set+1}/513 done in {end-start} sec')
 
 
 
@@ -50,7 +59,19 @@ mp 5  : 16.247143983840942(sec)
 mp 6  : 14.058369636535645(sec)
 mp 7  : 14.659644365310669(sec)
 mp 30 : 49.77599549293518
-4/15 03:11 3:10 2200개
+mp6 하나
+4/15 03:26 시작
+4/15 03:30 3700개
+4/15 03:35 9200개
 
+chunk 8개로 나눠서 시작
+4/15 03:42 시작
+4/15 03:45 5000개
+
+shell script 작업
+4/15 03:57 시작
+4/15 04:07 10000개
+4/15 04:25 24000개
+4/15 04:35 28000개
 '''
 
